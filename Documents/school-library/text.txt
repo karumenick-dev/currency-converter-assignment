@@ -1,0 +1,9 @@
+1. Fantasy
+2. Science Fiction
+3. Romance
+4. Mystery & Crime
+5. Thriller & Suspense
+6. Historical Fiction
+7. Young Adult (YA)
+8. Biography
+9. Dystopian
