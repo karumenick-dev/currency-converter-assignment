@@ -18,7 +18,7 @@ header p { color: var(--text-muted); }
 
 .controls-bar { display: flex; justify-content: space-between; background: var(--card-bg); padding: 1rem; border-radius: 7px; border: 1px solid var(--border); margin-bottom: 1.5rem; gap: 1rem; }
 .control-group { display: flex; align-items: center; gap: 0.5rem; font-weight: 500; }
-select, input { padding: 0.5rem; border: 1px solid var(--border); border-radius: 7px; font-size: 1rem; outline: none; }
+select, input { padding: 0.5rem; border: 1px solid var(--border); border-radius: 15px; font-size: 1rem; outline: none; }
 select:focus, input:focus { border-color: var(--primary); }
 
 .dashboard-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; }
