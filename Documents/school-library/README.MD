@@ -1,1 +1,0 @@
-# HTML and CSS for designing a school library issue in GitHub
