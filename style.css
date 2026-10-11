@@ -5,8 +5,7 @@
   --card-bg: #ffffff;
   --text-main: #1e293b;
   --text-muted: #64748b;
-  --border: #e2e8f0;
-  --danger: #ef4444;
+  --border: #e9edf4;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
