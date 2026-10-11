@@ -31,3 +31,4 @@ code .
 
 **What I'd Improve With More Time**
 - Add a feature that allows the user to set a maximum budget for a particular day to help keep spending in check.
+- Incorporate more local currencies.
