@@ -20,7 +20,7 @@ header p { color: var(--text-muted); }
 select, input { padding: 0.5rem; border: 2px solid var(--border); border-radius: 15px; font-size: 1rem; outline: none; }
 select:focus, input:focus { border-color: var(--primary); }
 
-.dashboard-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 1.5rem; }
+.dashboard-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 100%; margin: auto 0;}
 @media(max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
 .card { background: var(--card-bg); padding: 1.5rem; border-radius: 7px; border: 1px solid var(--border); }
