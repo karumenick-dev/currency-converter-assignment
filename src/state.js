@@ -57,3 +57,25 @@ export function setRatesError(message) {
   state = { ...state, ratesStatus: "error", ratesError: message };
 }
 
+// Delete an expense by its ID
+export function deleteExpense(id) {
+  const updatedExpenses = state.expenses.filter(expense => expense.id !== id);
+  // If the expense being deleted is currently open in the editor, clear editingId
+  const editingId = state.editingId === id ? null : state.editingId;
+  state = { ...state, expenses: updatedExpenses, editingId };
+}
+
+// Set which expense is currently being edited (or null to cancel/finish)
+export function setEditingId(id) {
+  state = { ...state, editingId: id };
+}
+
+// Update an existing expense with new details
+export function updateExpense({ id, description, amount, currency, category }) {
+  const updatedExpenses = state.expenses.map(expense =>
+    expense.id === id
+      ? { ...expense, description, amount, currency, category }
+      : expense
+  );
+  state = { ...state, expenses: updatedExpenses, editingId: null };
+}
