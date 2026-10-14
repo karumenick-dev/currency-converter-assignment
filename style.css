@@ -263,3 +263,23 @@ input:focus {
     gap: 0.5rem; 
   }
 }
+
+/*flag styling*/
+.select-with-flag {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+}
+
+.select-with-flag select {
+  flex: 1;
+  min-width: none;
+}
+
+.flag {
+  object-fit: cover;
+  width: 25px;
+  height: 20px;
+  border-radius:2px;
+  flex-shrink: 0;
+}
