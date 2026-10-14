@@ -13,6 +13,9 @@ import {
   setRatesLoading,
   setRates,
   setRatesError,
+  deleteExpense,
+  setEditingId,
+  updateExpense,
 } from "./state.js";
 import {
   fillSelect,
@@ -61,6 +64,7 @@ fillSelect(categoryFilterSelect, ["All", ...CATEGORIES], "All");
 
 // Leave edit mode and go back to an empty "Add" form
 function stopEditing() {
+  setEditingId(null);
   clearForm();
   refresh();
 }
@@ -79,17 +83,54 @@ form.addEventListener("submit", (event) => {
     return;
   }
 
-  const expense = {
-    description,
-    amount,
-    currency: currencySelect.value,
-    category: categorySelect.value,
-  };
+  const { editingId } = getState();
 
-  addExpense(expense);
+  if (editingId !== null) {
+    // Update existing expense
+    updateExpense({
+      id: editingId,
+      description,
+      amount,
+      currency: currencySelect.value,
+      category: categorySelect.value,
+    });
+  } else {
+    // Add new expense
+    const expense = {
+      description,
+      amount,
+      currency: currencySelect.value,
+      category: categorySelect.value,
+    };
+    addExpense(expense);
+  }
 
   stopEditing();
   descriptionInput.focus();
+});
+
+// Handle clicks on the expense list (Delete & Edit buttons via event delegation)
+expenseList.addEventListener("click", (event) => {
+  const button = event.target.closest("button");
+  if (!button) return;
+
+  const id = Number(button.dataset.id);
+  if (!id) return;
+
+  // Check if delete button was clicked
+  if (button.classList.contains("delete-btn") || button.dataset.action === "delete") {
+    deleteExpense(id);
+    refresh();
+  } 
+  // Check if edit button was clicked
+  else if (button.classList.contains("edit-btn") || button.dataset.action === "edit") {
+    setEditingId(id);
+    const expenseToEdit = getState().expenses.find((exp) => exp.id === id);
+    if (expenseToEdit) {
+      fillForm(expenseToEdit);
+    }
+    refresh();
+  }
 });
 
 cancelButton?.addEventListener("click", stopEditing);
@@ -116,4 +157,3 @@ retryButton?.addEventListener("click", loadRates);
 // Load rates now, then keep them fresh automatically
 loadRates();
 setInterval(loadRates, REFRESH_INTERVAL_MS);
-

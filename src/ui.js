@@ -77,12 +77,17 @@ export function renderRateStatement(formCurrency, state) {
 
 //expense list
 function createExpenseItem(expense, state) {
-  const { homeCurrency, rates } = state;
+  const { homeCurrency, rates, editingId } = state;
   const converted = convert(expense.amount, expense.currency, homeCurrency, rates);
 
   const item = document.createElement("li");
   item.className = "expense-item";
   item.dataset.id = expense.id;
+
+  // Highlight the item if it's currently being edited
+  if (expense.id === editingId) {
+    item.classList.add("editing");
+  }
 
   const info = document.createElement("div");
 
@@ -114,7 +119,28 @@ function createExpenseItem(expense, state) {
   originalText.append(flag, " ", formatMoney(expense.amount, expense.currency));
   amounts.append(convertedText, originalText);
 
-  item.append(info, amounts);
+  // --- NEW: Edit and Delete buttons container ---
+  const actions = document.createElement("div");
+  actions.className = "expense-actions";
+
+  const editBtn = document.createElement("button");
+  editBtn.type = "button";
+  editBtn.className = "edit-btn";
+  editBtn.dataset.action = "edit";
+  editBtn.dataset.id = expense.id;
+  editBtn.textContent = "Edit";
+
+  const deleteBtn = document.createElement("button");
+  deleteBtn.type = "button";
+  deleteBtn.className = "delete-btn";
+  deleteBtn.dataset.action = "delete";
+  deleteBtn.dataset.id = expense.id;
+  deleteBtn.textContent = "Delete";
+
+  actions.append(editBtn, deleteBtn);
+  // ----------------------------------------------
+
+  item.append(info, amounts, actions);
   return item;
 }
 
