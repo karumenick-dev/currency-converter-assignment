@@ -8,6 +8,7 @@ const initialState = {
   ratesStatus: "loading", // "loading", "ready" or "error"
   ratesError: "",
   lastUpdated: null, // when the API last updated its rates
+  editingId: null, // id of the expense being edited, or null when adding
 };
 
 let state = initialState;

@@ -111,7 +111,7 @@ categoryFilterSelect.addEventListener("change", () => {
 });
 
 // "Try again" button on the error banner
-retryButton.addEventListener("click", loadRates);
+retryButton?.addEventListener("click", loadRates);
 
 // Load rates now, then keep them fresh automatically
 loadRates();

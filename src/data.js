@@ -35,4 +35,4 @@ export const CURRENCIES = [
   { code: "TRY", name: "Turkish Lira", country: "TR" },
 ];
 
-export const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Other"];
+export const CATEGORIES = ["Food", "Transport", "Shopping", "Accomodation", "Other"];
