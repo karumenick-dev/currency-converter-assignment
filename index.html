@@ -7,50 +7,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>Your Personal Expense Tracker</h1>
-      <p>Track your spending with live currency conversion</p>
-    </header>
+  <header class="header">
+    <h1>Personal Expense Tracker</h1>
+    <p>Track your spending with live currency conversions</p>
+  </header>
 
-    <!-----Controls Bar----->
-
-    <div class="controls-bar">
-      <div class="control-group">
-        <label for="homeCurrency">Home Currency:</label>
-        <select id="homeCurrency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-          <option value="R">R</option>
-          <option value="¥">Yen</option>
-          <option value="CHF">Swiss Franc</option>
-          <option value="CAD">Canadian Dollar</option>
-          <option value="AUD">Australian Dollar</option>
-          <option value="NZD">New Zealnad Dollar</option>
-          <option value="KES">KES</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <label for="categoryFilter">Filter Category:</label>
-        <select id="categoryFilter">
-          <option value="ALL">All Categories</option>
-          <option value="Food">Food</option>
-          <option value="Transport">Transport</option>
-          <option value="Shopping">Shopping</option>
-          <option value="Accommodation">Accommodation</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-    </div>
-
-    <section id="statusMessage" class="hidden"></section>
-
-    <!-----Dasboard Grid----->
-
-    <div class="dashboard-grid">
-      <form id="expenseForm" class="card">
-        <h2>Add Expense</h2>
+  <main class="container">
+    <section id="form-card" class="card">
+      <h2 id="form-title">Add Expense</h2>
+      <form id="ExpenseForm" class="ExpenseForm">
         <div class="form-control">
           <label for="description">Description</label>
           <input type="text" id="description" required placeholder="e.g., Lunch, Uber">
@@ -61,47 +26,45 @@
         </div>
         <div class="form-control">
           <label for="currency">Currency Paid</label>
-          <select id="currency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="GBP">GBP</option>
-          <option value="R">R</option>
-          <option value="¥">Yen</option>
-          <option value="CHF">Swiss Franc</option>
-          <option value="CAD">Canadian Dollar</option>
-          <option value="AUD">Australian Dollar</option>
-          <option value="NZD">New Zealnad Dollar</option>
-          <option value="KES">KES</option>
-          </select>
+          <div class="select-with-flag">
+            <img id="currency-flag" class="flag" src="" alt="">
+            <select id="currency"></select>
+          </div>
         </div>
         <div class="form-control">
           <label for="category">Category</label>
-          <select id="category">
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Accommodation">Accommodation</option>
-            <option value="Other">Other</option>
-          </select>
+          <select id="category"></select>
         </div>
-        <button type="submit" class="btn-primary">Add Expense</button>
+        <div class="form-buttons">
+          <button type="submit" id="submit-button" class="btn btn-primary">Add expense</button>
+          <button type="button" id="cancel-button" class="btn btn-plain" hidden>Cancel</button>
+        </div>
       </form>
-
-    <!-----Summary Card----->
-
-      <div class="card summary-card">
-        <h2>Summary</h2>
-        <div class="total-display">
-          <span>Total Spending:</span>
-          <h3 id="runningTotal">0.00</h3>
-        </div>
-        <div id="expenseList" class="expense-list">
-          <!----- Dynamically populated ----->
+      <p id="form-error" class="form-error" role="alert"></p>
+    </section>
+    <section class="controls-bar">
+      <div class="control-group">
+        <label for="home-currency">Home Currency</label>
+        <div class="select-with-flag">
+          <img id="home-flag" class="flag" src="" alt="">
+          <select id="home-currency"></select>
         </div>
       </div>
-    </div>
-  </div>
-
+      <div class="controls-bar">
+        <label for="category-filter">Filter category</label>
+        <select id="category-filter"></select>
+      </div>
+    </section>
+    <section class="card">
+      <h2>Your Expenses</h2>
+      <ul id="expense-list" class="expense-list"></ul>
+      <p id="empty-message" class="empty-message">No expenses yet. Add one above.</p>
+      <div class="total">
+        <span class="total-label">Total spent</span>
+        <span id="total-amount" class="total-amount">0.00</span>
+      </div>
+    </section>
+  </main>
   <script src="src/main.js"></script>
 </body>
 </html>
