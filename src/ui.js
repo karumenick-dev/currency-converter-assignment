@@ -115,24 +115,6 @@ function createExpenseItem(expense, state) {
   amounts.append(convertedText, originalText);
 
   item.append(info, amounts);
-
-  const actions = document.createElement("div");
-  actions.className = "expense-actions";
-
-  const editButton = document.createElement("button");
-  editButton.type = "button";
-  editButton.className = "edit-btn";
-  editButton.dataset.id = expense.id;
-  editButton.textContent = "Edit";
-
-  const deleteButton = document.createElement("button");
-  deleteButton.type = "button";
-  deleteButton.className = "delete-btn";
-  deleteButton.dataset.id = expense.id;
-  deleteButton.textContent = "Delete";
-
-  actions.append(editButton, deleteButton);
-  item.append(actions);
   return item;
 }
 
