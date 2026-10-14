@@ -1,5 +1,5 @@
 // this will have the fixes lists or arrays the app will be using always
-//the currencies have country code for getting the flag of the country associated with the currency
+//the currencies have country code for getting the flag of the country associated with the currencx
 
 export const CURRENCIES = [
   { code: "USD", name: "US Dollar", country: "US" },
@@ -36,6 +36,3 @@ export const CURRENCIES = [
 ];
 
 export const CATEGORIES = ["Food", "Transport", "Shopping", "Bills", "Entertainment", "Other"];
-
-// How often to fetch fresh exchange rates: 60 minutes, in milliseconds
-export const REFRESH_INTERVAL_MS = 60 * 60 * 1000;
