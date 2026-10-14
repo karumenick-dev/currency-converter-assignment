@@ -5,13 +5,10 @@ import {
   calculateTotal,
   filterByCategory,
   formatMoney,
-  formatRateStatement,
   getFlagUrl,
 } from "./utils.js";
 
-// ---------- Filling dropdowns ----------
-
-/** Fill a <select> with simple text options, e.g. categories. */
+// filling dropdowns
 export function fillSelect(select, values, selectedValue) {
   select.innerHTML = "";
   values.forEach((value) => {
@@ -23,7 +20,6 @@ export function fillSelect(select, values, selectedValue) {
   });
 }
 
-/** Fill a <select> with every currency, e.g. "KES - Kenyan Shilling". */
 export function fillCurrencySelect(select, selectedCode) {
   select.innerHTML = "";
   CURRENCIES.forEach((currency) => {
@@ -35,53 +31,51 @@ export function fillCurrencySelect(select, selectedCode) {
   });
 }
 
-// ---------- Small pieces ----------
-
-/** Point an <img> at the flag for a currency. */
+// show the flag
 export function showFlag(img, currencyCode) {
   img.src = getFlagUrl(currencyCode);
   img.alt = `${currencyCode} flag`;
 }
 
 export function showFormError(message) {
-  document.querySelector("#form-error").textContent = message;
+  const formError = document.querySelector("#form-error");
+  if (formError) formError.textContent = message;
 }
 
 export function clearFormError() {
-  document.querySelector("#form-error").textContent = "";
+  const formError = document.querySelector("#form-error");
+  if (formError) formError.textContent = "";
 }
 
-/** The coloured banner at the top: loading, error or last updated. */
-function renderRatesStatus(state) {
-  const banner = document.querySelector("#rates-status");
-  const message = document.querySelector("#rates-message");
-  const retryButton = document.querySelector("#retry-button");
+export function renderRatesStatus(state) {
+  const statusEl = document.querySelector("#rates-status");
+  if (!statusEl) return;
 
-  banner.className = `rates-status ${state.ratesStatus}`;
-  retryButton.hidden = state.ratesStatus !== "error";
+  const hasRates = Object.keys(state.rates).length > 0;
+  statusEl.textContent = hasRates ? "Rates available" : "Rates unavailable";
+  statusEl.dataset.state = hasRates ? "ready" : "missing";
+}
 
-  if (state.ratesStatus === "loading") {
-    message.textContent = "Loading exchange rates…";
-  } else if (state.ratesStatus === "error") {
-    const hasOldRates = Object.keys(state.rates).length > 0;
-    message.textContent = hasOldRates
-      ? `Couldn't refresh rates (${state.ratesError}). Showing the last rates we had.`
-      : `Couldn't load exchange rates (${state.ratesError}).`;
-  } else {
-    const time = new Date(state.lastUpdated).toLocaleString();
-    message.textContent = `Live exchange rates, last updated ${time}`;
+export function renderRateStatement(formCurrency, state) {
+  const statementEl = document.querySelector("#rate-statement");
+  if (!statementEl) return;
+
+  const hasRates = Object.keys(state.rates).length > 0;
+  const currency = formCurrency || state.homeCurrency;
+
+  if (!hasRates || !state.rates[currency]) {
+    statementEl.textContent = "Rates unavailable";
+    return;
   }
+
+  const converted = convert(1, currency, state.homeCurrency, state.rates);
+  statementEl.textContent =
+    converted === null
+      ? "Rates unavailable"
+      : `${formatMoney(converted, state.homeCurrency)} per ${currency}`;
 }
 
-/** The "1 KES = 0.007722 USD" line under the form. */
-function renderRateStatement(formCurrency, state) {
-  const statement = formatRateStatement(formCurrency, state.homeCurrency, state.rates);
-  document.querySelector("#rate-statement").textContent = statement
-    ? `Exchange rate: ${statement}`
-    : "";
-}
-
-/** Build one <li> for an expense. */
+//expense list
 function createExpenseItem(expense, state) {
   const { homeCurrency, rates } = state;
   const converted = convert(expense.amount, expense.currency, homeCurrency, rates);
@@ -90,17 +84,11 @@ function createExpenseItem(expense, state) {
   item.className = "expense-item";
   item.dataset.id = expense.id;
 
-  // Highlight the row that is being edited
-  if (expense.id === state.editingId) {
-    item.classList.add("editing");
-  }
-
-  // Left side: description + category
   const info = document.createElement("div");
 
   const description = document.createElement("div");
   description.className = "expense-description";
-  description.textContent = expense.description; // textContent keeps user input safe
+  description.textContent = expense.description;
 
   const category = document.createElement("div");
   category.className = "expense-category";
@@ -108,7 +96,6 @@ function createExpenseItem(expense, state) {
 
   info.append(description, category);
 
-  // Middle: converted amount + original amount with its flag
   const amounts = document.createElement("div");
   amounts.className = "expense-amounts";
 
@@ -127,27 +114,28 @@ function createExpenseItem(expense, state) {
   originalText.append(flag, " ", formatMoney(expense.amount, expense.currency));
   amounts.append(convertedText, originalText);
 
-  // Right side: Edit and Delete buttons
+  item.append(info, amounts);
+
   const actions = document.createElement("div");
   actions.className = "expense-actions";
 
   const editButton = document.createElement("button");
   editButton.type = "button";
-  editButton.className = "btn btn-small btn-edit";
+  editButton.className = "edit-btn";
+  editButton.dataset.id = expense.id;
   editButton.textContent = "Edit";
 
   const deleteButton = document.createElement("button");
   deleteButton.type = "button";
-  deleteButton.className = "btn btn-small btn-delete";
+  deleteButton.className = "delete-btn";
+  deleteButton.dataset.id = expense.id;
   deleteButton.textContent = "Delete";
 
   actions.append(editButton, deleteButton);
-
-  item.append(info, amounts, actions);
+  item.append(actions);
   return item;
 }
 
-/** Draw the expense list and the empty message. */
 function renderExpenses(visibleExpenses, state) {
   const expenseList = document.querySelector("#expense-list");
   const emptyMessage = document.querySelector("#empty-message");
@@ -164,7 +152,6 @@ function renderExpenses(visibleExpenses, state) {
       : `No expenses in "${state.categoryFilter}".`;
 }
 
-/** Draw the total. It follows the filter, so it matches what's on screen. */
 function renderTotal(visibleExpenses, state) {
   const totalAmount = document.querySelector("#total-amount");
   const hasRates = Object.keys(state.rates).length > 0;
@@ -178,7 +165,6 @@ function renderTotal(visibleExpenses, state) {
   totalAmount.textContent = formatMoney(total, state.homeCurrency);
 }
 
-/** Switch the form between "Add" mode and "Edit" mode. */
 function renderFormMode(state) {
   const isEditing = state.editingId !== null;
 
@@ -188,7 +174,6 @@ function renderFormMode(state) {
   document.querySelector("#form-card").classList.toggle("editing", isEditing);
 }
 
-/** Put an expense's values into the form so the user can change them. */
 export function fillForm(expense) {
   document.querySelector("#description").value = expense.description;
   document.querySelector("#amount").value = expense.amount;
@@ -196,18 +181,22 @@ export function fillForm(expense) {
   document.querySelector("#category").value = expense.category;
 }
 
-/** Empty the text boxes (the dropdowns keep their choice). */
 export function clearForm() {
   document.querySelector("#description").value = "";
   document.querySelector("#amount").value = "";
+  const currency = document.querySelector("#currency");
+  const category = document.querySelector("#category");
+
+  if (currency && currency.options.length) {
+    currency.value = currency.options[0].value;
+  }
+
+  if (category && category.options.length) {
+    category.value = category.options[0].value;
+  }
 }
 
-// ---------- Main render ----------
-
-/**
- * Redraw everything from the current state.
- * `formCurrency` is the currency picked in the "Add an expense" form.
- */
+// Rewriting of everything in the current state
 export function render(state, formCurrency) {
   const visibleExpenses = filterByCategory(state.expenses, state.categoryFilter);
 
@@ -217,6 +206,6 @@ export function render(state, formCurrency) {
   renderExpenses(visibleExpenses, state);
   renderTotal(visibleExpenses, state);
 
-  showFlag(document.querySelector("#currency-flag"), formCurrency);
+  showFlag(document.querySelector("#currency-flag"), formCurrency || state.homeCurrency);
   showFlag(document.querySelector("#home-flag"), state.homeCurrency);
 }
