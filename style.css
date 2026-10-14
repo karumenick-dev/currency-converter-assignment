@@ -166,11 +166,13 @@ input:focus {
   gap: 0.75rem; 
   max-height: 400px; 
   overflow-y: auto; 
+  margin: 0;
+  padding: 0;
 }
 
 .expense-item { 
-  display: flex; 
-  justify-content: space-between; 
+  display: grid;
+  grid-template-columns: 1fr auto auto;
   align-items: center; 
   padding: 0.75rem; 
   background: var(--card-bg); 
@@ -185,13 +187,22 @@ input:focus {
 
 .expense-info p { 
   color: var(--text-muted); 
-  font-size: 0.8125rem; 
+  font-size: 0.5rem; 
 }
 
 .expense-actions { 
   display: flex; 
   align-items: center; 
   gap: 1rem; 
+}
+
+.expense-description {
+  font-weight: 700;
+}
+
+.expense-category {
+  font-size: 0.85rem;
+  color: var(--text-muted);
 }
 
 .expense-amounts { 
@@ -204,6 +215,7 @@ input:focus {
 }
 
 .expense-amounts .original { 
+  display: block;
   color: var(--text-muted); 
   font-size: 0.75rem; 
 }
@@ -283,3 +295,13 @@ input:focus {
   border-radius:2px;
   flex-shrink: 0;
 }
+
+.flag-small {
+  width: 15px;
+  height: 12px;
+  vertical-align: -1px;
+}
+
+
+
+
