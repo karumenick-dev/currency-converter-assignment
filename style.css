@@ -302,6 +302,50 @@ input:focus {
   vertical-align: -1px;
 }
 
+.expense-actions {
+  display: flex;
+  gap: 0.25rem;
+}
 
+.edit-btn {
+  color: green;
+  background: none;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
 
+.edit-btn:hover {
+  color:#1e293b;
+}
 
+.delete-btn {
+  color: red;
+  background: none;
+  border: none;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+
+.delete-btn:hover {
+  color: maroon;
+}
+
+#cancel-button {
+  padding: 0.4rem 0.4rem;
+  background:#abb2bc;
+  border: 20px;
+  margin: 20px auto;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#cancel-button:hover {
+  background:#97aac5;
+}
